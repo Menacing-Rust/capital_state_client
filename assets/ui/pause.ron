@@ -1,0 +1,64 @@
+#![enable(implicit_some)]
+Container(
+	transform: (
+		percent: true,
+		width: 100,
+		height: 100,
+		anchor: Middle
+	),
+	background: SolidColor(1.0, 1.0, 1.0, 0.2),
+	children: [
+		Label(
+			transform: (
+				width: 200,
+				height: 30,
+				x: 0,
+				y: 20
+			),
+			text: (
+				text: "Pause",
+				font_size: 25,
+				color: (1.0, 1.0, 1.0, 1.0),
+				align: Middle
+			)
+		),
+		Button(
+			transform: (
+				id: "continue_button",
+				width: 150,
+				height: 30,
+				x: -80,
+				y: -20,
+				tab_order: 1,
+				mouse_reactive: true,
+				selectable: 0
+			),
+			button: (
+				text: "Continue",
+				font_size: 25,
+				normal_text_color: (0.0, 0.0, 0.0, 1.0),
+				normal_image: SolidColor(0.5, 0.5, 0.5, 1.0),
+				hover_image: SolidColor(1.0, 0.9, 0.9, 1.0)
+			)
+		),
+		Button(
+			transform: (
+				id: "main_menu_button",
+				width: 150,
+				height: 30,
+				x: 80,
+				y: -20,
+				tab_order: 1,
+				mouse_reactive: true,
+				selectable: 0
+			),
+			button: (
+				text: "Main Menu",
+				font_size: 25,
+				normal_text_color: (0.0, 0.0, 0.0, 1.0),
+				normal_image: SolidColor(0.5, 0.5, 0.5, 1.0),
+				hover_image: SolidColor(1.0, 0.9, 0.9, 1.0)
+			)
+		)
+	]
+)

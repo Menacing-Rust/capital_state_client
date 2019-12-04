@@ -1,0 +1,45 @@
+#![enable(implicit_some)]
+Container(
+	transform: (
+		percent: true,
+		width: 100.0,
+		height: 100.0,
+		anchor: Middle,
+	),
+	background: SolidColor(1.0, 1.0, 1.0, 1.0),
+	children: [
+		Label(
+			transform: (
+				width: 200.0,
+				height: 50.0,
+				x: 0.0,
+				y: 0.0,
+			),
+			text: (
+				text: "Game Over!",
+				font_size: 25.0,
+				color: (0.0, 0.0, 0.0, 1.0),
+				align: Middle
+			)
+		),
+		Button(
+			transform: (
+				id: "main_menu_button",
+				width: 200.0,
+				height: 40.0,
+				y: -60,
+				anchor: Middle,
+				mouse_reactive: true,
+				tab_order: 1,
+			),
+			button: (
+					text: "Go to MainMenu state!",
+					font_size: 16.0,
+					normal_text_color: (1.0, 1.0, 1.0, 1.0),
+					normal_image: SolidColor(0.0, 0.0, 0.0, 1.0),
+					hover_image: SolidColor(0.0, 0.0, 0.0, 0.5),
+					press_image: SolidColor(0.0, 0.0, 0.0, 1.0),
+			)
+		)
+	]
+)

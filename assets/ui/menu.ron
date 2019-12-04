@@ -1,0 +1,45 @@
+#![enable(implicit_some)]
+Container(
+	transform: (
+		percent: true,
+		width: 100.0,
+		height: 100.0,
+		anchor: Middle,
+	),
+	children: [
+		Label(
+			transform: (
+				width: 200.0,
+				height: 50.0,
+				x: 0.0,
+				y: 50.0,
+			),
+			text: (
+				text: "Main Menu",
+				font_size: 25.0,
+				color: (1.0, 1.0, 1.0, 1.0),
+				align: Middle
+			)
+		),
+		Button(
+			transform: (
+				id: "play_button",
+				width: 150.0,
+				height: 40.0,
+				x: 0.0,
+				y: 0,
+				anchor: Middle,
+				mouse_reactive: true,
+				tab_order: 1,
+			),
+			button: (
+					text: "Play",
+					font_size: 16.0,
+					normal_text_color: (0.0, 0.0, 0.0, 1.0),
+					normal_image: SolidColor(1.0, 1.0, 1.0, 1.0),
+					hover_image: SolidColor(1.0, 1.0, 1.0, 0.5),
+					press_image: SolidColor(1.0, 1.0, 1.0, 1.0),
+			)
+		)
+	]
+)

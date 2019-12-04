@@ -1,0 +1,5 @@
+#![enable(implicit_some)]
+(
+	title: "Game Client",
+	dimensions: (500, 500)
+)
