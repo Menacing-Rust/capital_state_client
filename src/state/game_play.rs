@@ -1,16 +1,16 @@
-use super::Pause;
+use super::{Pause};
 use amethyst::{
 	assets::{AssetStorage, Loader},
 	core::transform::Transform,
 	ecs::prelude::*,
-	input::{InputEvent},
+	input::InputEvent,
 	prelude::*,
 	renderer::{Camera, ImageFormat, SpriteRender, SpriteSheet, SpriteSheetFormat, Texture},
 	winit::VirtualKeyCode,
 };
 
 use crate::resource::Paddle;
-use crate::system::{PaddleSystem};
+use crate::system::PaddleSystem;
 
 const WORLD_WIDTH: f32 = 100.0;
 const WORLD_HEIGHT: f32 = 100.0;
@@ -20,7 +20,10 @@ const PADDLE_HEIGHT: f32 = 30.0;
 
 #[derive(Default)]
 pub struct GamePlay {
-	dispatcher: Option<Dispatcher<'static, 'static>>
+	dispatcher: Option<Dispatcher<'static, 'static>>,
+	camera: Option<Entity>,
+	left_paddle: Option<Entity>,
+	right_paddle: Option<Entity>,
 }
 
 impl SimpleState for GamePlay {
@@ -62,36 +65,40 @@ impl SimpleState for GamePlay {
 			WORLD_HEIGHT / 2.0,
 			0.0,
 		);
-
-		world
-			.create_entity()
-			.with(camera)
-			.with(camera_transform)
-			.build();
-		world
-			.create_entity()
-			.with(left_paddle)
-			.with(left_transform)
-			.with(SpriteRender {
-				sprite_sheet: sprite_sheet.clone(),
-				sprite_number: 0,
-			})
-			.build();
-		world
-			.create_entity()
-			.with(right_paddle)
-			.with(right_transform)
-			.with(SpriteRender {
-				sprite_sheet: sprite_sheet.clone(),
-				sprite_number: 1,
-			})
-			.build();
+		self.camera = Some(
+			world
+				.create_entity()
+				.with(camera)
+				.with(camera_transform)
+				.build(),
+		);
+		self.left_paddle = Some(
+			world
+				.create_entity()
+				.with(left_paddle)
+				.with(left_transform)
+				.with(SpriteRender {
+					sprite_sheet: sprite_sheet.clone(),
+					sprite_number: 0,
+				})
+				.build(),
+		);
+		self.right_paddle = Some(
+			world
+				.create_entity()
+				.with(right_paddle)
+				.with(right_transform)
+				.with(SpriteRender {
+					sprite_sheet: sprite_sheet.clone(),
+					sprite_number: 1,
+				})
+				.build(),
+		);
 
 		let mut dispatcher_builder = DispatcherBuilder::new();
 		dispatcher_builder.add(PaddleSystem, "paddle_system", &[]);
 		let mut dispatcher = dispatcher_builder.build();
 		dispatcher.setup(world);
-		
 		self.dispatcher = Some(dispatcher);
 	}
 
@@ -102,11 +109,7 @@ impl SimpleState for GamePlay {
 		Trans::None
 	}
 
-	fn handle_event(
-		&mut self,
-		_data: StateData<GameData>,
-		event: StateEvent,
-	) -> SimpleTrans {
+	fn handle_event(&mut self, _data: StateData<GameData>, event: StateEvent) -> SimpleTrans {
 		match &event {
 			StateEvent::Input(input_event) => match input_event {
 				InputEvent::KeyPressed { key_code, .. } => {
@@ -120,5 +123,10 @@ impl SimpleState for GamePlay {
 			},
 			_ => Trans::None,
 		}
+	}
+
+	fn on_stop(&mut self, data: StateData<'_, GameData<'_, '_>>) {
+		let entities = [self.camera.unwrap(), self.left_paddle.unwrap(), self.right_paddle.unwrap()];
+		data.world.delete_entities(&entities).unwrap();
 	}
 }

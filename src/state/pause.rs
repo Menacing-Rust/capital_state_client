@@ -18,7 +18,6 @@ pub struct Pause {
 	main_menu_button: Option<Entity>,
 }
 
-
 impl SimpleState for Pause {
 	fn on_start(&mut self, data: StateData<GameData>) {
 		let world = data.world;
@@ -37,29 +36,26 @@ impl SimpleState for Pause {
 	}
 
 	fn handle_event(&mut self, data: StateData<GameData>, event: StateEvent) -> SimpleTrans {
-		type TransChannel = EventChannel<TransEvent<GameData<'static, 'static>, StateEvent>>;
-
-		match &event {
-			StateEvent::Ui(UiEvent { event_type, target }) => match event_type {
-				UiEventType::Click => {
-					if Some(target) == self.continue_button.as_ref() {
-						Trans::Pop
-					} else if Some(target) == self.main_menu_button.as_ref() {
-						/*
-							TODO: Fix this shit
-							Expected behavior: Popping Pause state and then Switching GamePlay state to Menu state
-						*/
-						data
-							.world
-							.write_resource::<TransChannel>()
-							.single_write(Box::new(|| Trans::Switch(Box::new(Menu::default()))));
-						Trans::Pop
-					} else {
-						Trans::None
-					}
+		match event {
+			StateEvent::Ui(UiEvent {
+				event_type: UiEventType::Click,
+				target,
+			}) => {
+				if Some(target) == self.continue_button {
+					Trans::Pop
+				} else if Some(target) == self.main_menu_button {
+					/*
+						TODO: Fix this shit
+						Expected behavior: Popping Pause state and then Switching GamePlay state to Menu state
+					*/
+					let mut resource_writer = data.world.write_resource::<EventChannel<TransEvent<GameData, StateEvent>>>();
+					resource_writer.single_write(Box::new(|| Trans::Pop));
+					resource_writer.single_write(Box::new(|| Trans::Switch(Box::new(Menu::default()))));
+					Trans::None
+				} else {
+					Trans::None
 				}
-				_ => Trans::None,
-			},
+			}
 			StateEvent::Input(event) => match event {
 				InputEvent::KeyPressed { key_code, .. } => match key_code {
 					VirtualKeyCode::Escape => Trans::Pop,
