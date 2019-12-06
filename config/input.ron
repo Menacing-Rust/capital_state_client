@@ -1,9 +1,9 @@
 (
 	axes: {
-		"left_paddle": Emulated(pos: Key(W), neg: Key(S)),
-		"right_paddle": Emulated(pos: Key(Up), neg: Key(Down)),
+		"player_vertical": Emulated(pos: Key(W), neg: Key(S)),
+		"player_horizontal": Emulated(pos: Key(D), neg: Key(A)),
 	},
 	actions: {
-		
+		"press_space": Emulated(Key(SPACE))
 	}
 )

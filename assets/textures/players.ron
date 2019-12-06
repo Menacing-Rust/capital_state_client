@@ -5,13 +5,7 @@
 		(
 			x: 0,
 			y: 0,
-			width: 3,
-			height: 16
-		),
-		(
-			x: 13,
-			y: 0,
-			width: 3,
+			width: 16,
 			height: 16
 		)
 	]

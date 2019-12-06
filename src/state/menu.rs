@@ -34,7 +34,7 @@ impl SimpleState for Menu {
 
 	fn handle_event(
 		&mut self,
-		_data: StateData<'_, GameData<'_, '_>>,
+		data: StateData<'_, GameData<'_, '_>>,
 		event: StateEvent,
 	) -> SimpleTrans {
 		match &event {
@@ -48,7 +48,7 @@ impl SimpleState for Menu {
 			StateEvent::Ui(UiEvent { event_type, target }) => match event_type {
 				UiEventType::Click => {
 					if Some(target) == self.play_button.as_ref() {
-						Trans::Switch(Box::new(GamePlay::default()))
+						Trans::Switch(Box::new(GamePlay::new(data.world)))
 					} else {
 						Trans::None
 					}

@@ -44,10 +44,6 @@ impl SimpleState for Pause {
 				if Some(target) == self.continue_button {
 					Trans::Pop
 				} else if Some(target) == self.main_menu_button {
-					/*
-						TODO: Fix this shit
-						Expected behavior: Popping Pause state and then Switching GamePlay state to Menu state
-					*/
 					let mut resource_writer = data.world.write_resource::<EventChannel<TransEvent<GameData, StateEvent>>>();
 					resource_writer.single_write(Box::new(|| Trans::Pop));
 					resource_writer.single_write(Box::new(|| Trans::Switch(Box::new(Menu::default()))));
