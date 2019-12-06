@@ -4,6 +4,6 @@
 		"player_horizontal": Emulated(pos: Key(D), neg: Key(A)),
 	},
 	actions: {
-		"press_space": Emulated(Key(SPACE))
+		"press_space": [[Key(Space)]]
 	}
 )

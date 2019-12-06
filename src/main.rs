@@ -13,18 +13,20 @@ use amethyst::{
     ui::{RenderUi, UiBundle},
     utils::application_root_dir,
 };
-use std::net::{IpAddr, Ipv4Addr, SocketAddr, SocketAddrV4};
+use std::net::{IpAddr, Ipv4Addr, SocketAddr};
+use std::time::Duration;
 
 mod resource;
 mod state;
 mod system;
-use state::*;
 use resource::Payload;
+use state::*;
 
 fn main() -> amethyst::Result<()> {
     amethyst::start_logger(Default::default());
 
-    let host_ip: SocketAddr = SocketAddr::new(IpAddr::from(Ipv4Addr::new(127, 0, 0, 1)), 7070);
+    let my_ip: SocketAddr = SocketAddr::new(IpAddr::from(Ipv4Addr::new(127, 0, 0, 1)), 0);
+    let network_config = ServerConfig::new(my_ip, 1000, true, Default::default());
 
     let root = application_root_dir()?;
     let display = root.join("config").join("display.ron");
@@ -42,11 +44,15 @@ fn main() -> amethyst::Result<()> {
         .with_bundle(UiBundle::<StringBindings>::new())?
         .with_bundle(input_bundle)?
         .with_bundle(render_bundle)?
-        .with_bundle(NetworkBundle::<Payload>::new(host_ip))?
+        .with_bundle(NetworkBundle::<Payload>::from_config(network_config))?
         // .with(system::EntityPacketSystem, "entity_packet_system", &[])
-        .with(system::ReceiverSystem, "network_receiver", &[]);
+        // .with(system::ReceiverSystem, "network_receiver", &[]);
+        ;
     let mut game = Application::build(assets, Menu::default())?
-        .with_frame_limit(FrameRateLimitStrategy::Sleep, 60)
+        .with_frame_limit(
+            FrameRateLimitStrategy::Yield,
+            60,
+        )
         .build(game_data)?;
     game.run();
     Ok(())

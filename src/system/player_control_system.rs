@@ -1,9 +1,9 @@
-use crate::resource::{Player, Position, Payload};
+use crate::resource::{Payload, Player, Position};
 use amethyst::derive::SystemDesc;
 use amethyst::ecs::{Join, Read, ReadStorage, System, SystemData, World, WriteStorage};
 use amethyst::input::{InputHandler, StringBindings};
-use amethyst::prelude::*;
 use amethyst::network::{NetConnection, NetEvent, NetPacket};
+use amethyst::prelude::*;
 
 /**
  * Handling user input and move entity accordingly
@@ -28,9 +28,12 @@ impl<'a> System<'a> for PlayerControlSystem {
 			let shoot = input.action_is_down("press_space").unwrap_or_default();
 
 			if shoot {
+				println!("Open fire!");
 				let connection: &mut NetConnection<Payload> = connection;
 				let packet = NetEvent::Packet(
-					NetPacket::unreliable(Payload::new("boomber", "Spacebar Pressed!"))
+					NetPacket::unreliable(
+						Payload::new("boomber", "Spacebar Pressed!")
+					)
 				);
 				connection.queue(packet);
 			}

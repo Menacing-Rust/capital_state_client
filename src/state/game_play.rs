@@ -10,7 +10,7 @@ use amethyst::{
     renderer::{Camera, ImageFormat, SpriteRender, SpriteSheet, SpriteSheetFormat, Texture},
     winit::VirtualKeyCode,
 };
-use std::net::{IpAddr, Ipv4Addr, SocketAddr, SocketAddrV4};
+use std::net::{IpAddr, Ipv4Addr, SocketAddr};
 
 use crate::resource::{Payload, Player, Position};
 use crate::system::{MovementSystem, PlayerControlSystem};
@@ -44,7 +44,7 @@ impl SimpleState for GamePlay {
         let world = data.world;
         self.dispatcher.setup(world);
 
-        let host_ip: SocketAddr = SocketAddr::new(IpAddr::from(Ipv4Addr::new(127, 0, 0, 1)), 7070);
+        // let host_ip: SocketAddr = SocketAddr::new(IpAddr::from(Ipv4Addr::new(127, 0, 0, 1)), 7070);
         world.register::<Player>();
 
         let texture_handle = {
@@ -86,7 +86,7 @@ impl SimpleState for GamePlay {
                 .with(player)
                 .with(player_position.transform())
                 .with(player_position)
-                .with(NetConnection::<Payload>::new(host_ip))
+                .with(NetConnection::<Payload>::new("127.0.0.1:7070".parse().unwrap()))
                 .with(SpriteRender {
                     sprite_sheet: sprite_sheet.clone(),
                     sprite_number: 0,

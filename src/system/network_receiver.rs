@@ -1,13 +1,10 @@
+use crate::resource::Payload;
 use amethyst::{
     derive::SystemDesc,
-    ecs::{
-        Component, DenseVecStorage, Entities, Join, ReadStorage, ReaderId, System, SystemData,
-        Write, WriteStorage,
-    },
-    network::{NetConnection, NetEvent, NetPacket},
+    ecs::{Component, DenseVecStorage, Entities, Join, ReaderId, System, SystemData, WriteStorage},
+    network::{NetConnection, NetEvent},
     prelude::*,
 };
-use crate::resource::Payload;
 
 pub struct ConnectionReader(ReaderId<NetEvent<Payload>>);
 
